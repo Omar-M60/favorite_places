@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:favorite_places_app/models/place.model.dart';
 import 'package:favorite_places_app/providers/places_provider.dart';
+import 'package:favorite_places_app/widgets/image_input.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,14 +19,15 @@ class PlaceFormScreen extends ConsumerStatefulWidget {
 class _PlaceFormScreenState extends ConsumerState<PlaceFormScreen> {
   final _formKey = GlobalKey<FormState>();
   String _inputTitle = "";
+  late File _inputImage;
 
   void _submitForm() {
     if (!_formKey.currentState!.validate()) return;
     _formKey.currentState!.save();
 
-    ref
-        .read(placesProviderNotifier.notifier)
-        .updatePlaces(Place(name: _inputTitle));
+    ref.read(placesProviderNotifier.notifier).updatePlaces(
+          Place(name: _inputTitle, image: _inputImage),
+        );
 
     Navigator.of(context).pop();
   }
@@ -68,6 +72,11 @@ class _PlaceFormScreenState extends ConsumerState<PlaceFormScreen> {
                 maxLength: 50,
                 onChanged: (value) => _inputTitle = value,
               ),
+              const SizedBox(height: 16),
+              ImageInput(
+                onPickImage: (image) => _inputImage = image,
+              ),
+              const SizedBox(height: 16),
               ElevatedButton(
                 style: Theme.of(context).elevatedButtonTheme.style,
                 onPressed: _submitForm,

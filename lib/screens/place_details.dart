@@ -16,13 +16,20 @@ class PlaceDetailsScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Place Details",
+          place.name,
           style: Theme.of(context).appBarTheme.titleTextStyle,
         ),
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       ),
-      body: Center(
-        child: Text(place.name),
+      body: Stack(
+        children: [
+          Image(
+            image: FileImage(place.image),
+            height: double.infinity,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
+        ],
       ),
     );
   }

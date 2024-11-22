@@ -39,6 +39,10 @@ class _PlacesState extends ConsumerState<PlacesScreen> {
       currentDisplay = ListView.builder(
         itemCount: places.length,
         itemBuilder: (context, index) => ListTile(
+          leading: CircleAvatar(
+            radius: 26,
+            backgroundImage: FileImage(places[index].image),
+          ),
           title: Text(places[index].name),
           onTap: () {
             Navigator.of(context).push(
