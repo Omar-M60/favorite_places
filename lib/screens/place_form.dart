@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:favorite_places_app/models/place.model.dart';
+import 'package:favorite_places_app/models/place_location.model.dart';
 import 'package:favorite_places_app/providers/places_provider.dart';
 import 'package:favorite_places_app/widgets/image_input.dart';
+import 'package:favorite_places_app/widgets/location_input.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,13 +22,18 @@ class _PlaceFormScreenState extends ConsumerState<PlaceFormScreen> {
   final _formKey = GlobalKey<FormState>();
   String _inputTitle = "";
   late File _inputImage;
+  late PlaceLocation _inputLocation;
 
   void _submitForm() {
     if (!_formKey.currentState!.validate()) return;
     _formKey.currentState!.save();
 
     ref.read(placesProviderNotifier.notifier).updatePlaces(
-          Place(name: _inputTitle, image: _inputImage),
+          Place(
+            name: _inputTitle,
+            image: _inputImage,
+            location: _inputLocation,
+          ),
         );
 
     Navigator.of(context).pop();
@@ -75,6 +82,10 @@ class _PlaceFormScreenState extends ConsumerState<PlaceFormScreen> {
               const SizedBox(height: 16),
               ImageInput(
                 onPickImage: (image) => _inputImage = image,
+              ),
+              const SizedBox(height: 16),
+              LocationInput(
+                onSelectLocation: (location) => _inputLocation = location,
               ),
               const SizedBox(height: 16),
               ElevatedButton(

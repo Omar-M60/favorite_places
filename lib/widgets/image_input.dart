@@ -59,7 +59,7 @@ class _ImageInputState extends State<ImageInput> {
     return GestureDetector(
       onTap: _takePicture,
       child: Container(
-        height: 400,
+        height: 300,
         width: double.infinity,
         alignment: Alignment.center,
         decoration: BoxDecoration(
