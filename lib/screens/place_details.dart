@@ -50,7 +50,7 @@ class PlaceDetailsScreen extends ConsumerWidget {
                     ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

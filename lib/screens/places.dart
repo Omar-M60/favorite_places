@@ -15,6 +15,14 @@ class PlacesScreen extends ConsumerStatefulWidget {
 }
 
 class _PlacesState extends ConsumerState<PlacesScreen> {
+  late Future<void> _placesFuture;
+
+  @override
+  void initState() {
+    _placesFuture = ref.read(placesProviderNotifier.notifier).loadPlaces();
+    super.initState();
+  }
+
   void _addPlaceItem() async {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -26,6 +34,7 @@ class _PlacesState extends ConsumerState<PlacesScreen> {
   @override
   Widget build(BuildContext context) {
     final places = ref.watch(placesProviderNotifier);
+
     Widget currentDisplay = Center(
       child: Text(
         "No places added...",
@@ -72,7 +81,15 @@ class _PlacesState extends ConsumerState<PlacesScreen> {
         actionsIconTheme: Theme.of(context).appBarTheme.iconTheme,
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       ),
-      body: currentDisplay,
+      body: FutureBuilder(
+        future: _placesFuture,
+        builder: (context, snapshot) =>
+            snapshot.connectionState == ConnectionState.waiting
+                ? CircularProgressIndicator(
+                    color: Theme.of(context).colorScheme.primary,
+                  )
+                : currentDisplay,
+      ),
     );
   }
 }
